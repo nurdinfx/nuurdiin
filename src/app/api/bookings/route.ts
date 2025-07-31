@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server';
 import { authOptions } from '@/libs/auth';
 import { createBooking, updateHotelRoom } from '@/libs/apis';
 
-export async function POST(req: Request) {
+export async function POST(req: Request): Promise<Response> {
   const session = await getServerSession(authOptions);
 
   if (!session) {

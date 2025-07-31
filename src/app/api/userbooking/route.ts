@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server';
 import { authOptions } from '@/libs/auth';
 import { getUserBookings } from '@/libs/apis';
 
-export async function GET(req: Request, res: Response) {
+export async function GET(req: Request): Promise<Response> {
   const session = await getServerSession(authOptions);
 
   if (!session) {

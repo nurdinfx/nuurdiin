@@ -40,7 +40,7 @@ export interface SomaliPaymentResponse {
 
 
 
-export async function POST(req: Request) {
+export async function POST(req: Request): Promise<Response> {
   try {
     const {
       checkinDate,
@@ -172,7 +172,7 @@ export async function POST(req: Request) {
 }
 
 // Get available payment methods
-export async function GET() {
+export async function GET(): Promise<Response> {
   const methods = Object.entries(somaliPaymentConfig.paymentMethods).map(([key, config]) => ({
     id: key,
     name: config.name,
