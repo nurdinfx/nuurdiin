@@ -1,9 +1,8 @@
-import type { DefaultSession } from 'next-auth';
-
 declare module 'next-auth' {
   interface Session {
-    user: DefaultSession['user'] & {
+    user: {
       id: string;
+      // Add other user properties here if needed
     };
   }
 }
