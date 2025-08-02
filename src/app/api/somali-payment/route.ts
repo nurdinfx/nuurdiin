@@ -40,7 +40,7 @@ export interface SomaliPaymentResponse {
 
 
 
-export async function POST(req: Request): Promise<Response> {
+export async function POST(req: Request) {
   try {
     const {
       checkinDate,
@@ -63,29 +63,29 @@ export async function POST(req: Request): Promise<Response> {
       !numberOfDays ||
       !paymentMethod
     ) {
-      return new NextResponse('All fields are required', { status: 400 });
+      return new Response('All fields are required', { status: 400 });
     }
 
     // Validate payment method
     if (!somaliPaymentConfig.paymentMethods[paymentMethod]) {
-      return new NextResponse('Invalid payment method', { status: 400 });
+      return new Response('Invalid payment method', { status: 400 });
     }
 
     // Validate phone number for mobile money payments
     const paymentConfig = somaliPaymentConfig.paymentMethods[paymentMethod];
     if (paymentConfig.type === 'mobile_money' && !phoneNumber) {
-      return new NextResponse('Phone number required for mobile money payments', { status: 400 });
+      return new Response('Phone number required for mobile money payments', { status: 400 });
     }
 
     // Validate account number for bank transfers
     if (paymentConfig.type === 'bank_transfer' && !accountNumber) {
-      return new NextResponse('Account number required for bank transfers', { status: 400 });
+      return new Response('Account number required for bank transfers', { status: 400 });
     }
 
     // Check authentication
     const session = await getServerSession(authOptions);
     if (!session) {
-      return new NextResponse('Authentication required', { status: 401 });
+      return new Response('Authentication required', { status: 401 });
     }
 
     const userId = session.user.id;
@@ -96,7 +96,7 @@ export async function POST(req: Request): Promise<Response> {
     const room = await getRoom(hotelRoomSlug);
     
     if (!room) {
-      return new NextResponse('Room not found', { status: 404 });
+      return new Response('Room not found', { status: 404 });
     }
     
     const discountPrice = room.price - (room.price / 100) * room.discount;
@@ -109,7 +109,7 @@ export async function POST(req: Request): Promise<Response> {
     // Validate amount limits
     const validation = validatePaymentAmount(totalAmount, paymentMethod);
     if (!validation.valid) {
-      return new NextResponse(validation.message, { status: 400 });
+      return new Response(validation.message, { status: 400 });
     }
 
     // Generate unique payment ID and reference
@@ -167,12 +167,12 @@ export async function POST(req: Request): Promise<Response> {
 
   } catch (error: any) {
     console.log('Somali payment failed:', error);
-    return new NextResponse(error.message || 'Payment failed', { status: 500 });
+    return new Response(error.message || 'Payment failed', { status: 500 });
   }
 }
 
 // Get available payment methods
-export async function GET(): Promise<Response> {
+export async function GET() {
   const methods = Object.entries(somaliPaymentConfig.paymentMethods).map(([key, config]) => ({
     id: key,
     name: config.name,

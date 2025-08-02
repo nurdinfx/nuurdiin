@@ -79,6 +79,8 @@ export const createBooking = async ({
   numberOfDays,
   totalPrice,
   user,
+  specialRequests,
+  paymentMethod,
 }: CreateBookingDto) => {
   // Check if required environment variables are available
   if (!process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || !process.env.NEXT_PUBLIC_SANITY_DATASET || !process.env.SANITY_STUDIO_TOKEN) {
@@ -99,6 +101,12 @@ export const createBooking = async ({
           children,
           totalPrice,
           discount,
+          status: 'pending',
+          paymentStatus: 'pending',
+          specialRequests,
+          paymentMethod,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
         },
       },
     ],

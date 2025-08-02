@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server';
 export async function GET(
   req: Request,
   { params }: { params: { id: string } }
-): Promise<Response> {
+) {
   const roomId = params.id;
 
   try {
@@ -16,6 +16,6 @@ export async function GET(
     });
   } catch (error) {
     console.log('Getting Review Failed', error);
-    return new NextResponse('Unable to fetch', { status: 400 });
+    return new Response('Unable to fetch', { status: 400 });
   }
 }

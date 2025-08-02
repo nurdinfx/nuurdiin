@@ -46,4 +46,6 @@ export type CreateBookingDto = {
   children: number;
   totalPrice: number;
   discount: number;
+  specialRequests?: string;
+  paymentMethod?: string;
 };
